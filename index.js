@@ -6,8 +6,8 @@ const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 // middlewares
-app.use(cors);
-app.use(express());
+app.use(cors());
+app.use(express.json());
 
   const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@phassignment.y94e1.mongodb.net/?retryWrites=true&w=majority&appName=phAssignment`;
 
@@ -22,13 +22,19 @@ const client = new MongoClient(uri, {
 
 async function run(){
     try{
-        console.log("successfully Connected to mongoDB")
+      await client.connect();
+      console.log("successfully Connected to mongoDB");
+
+   
     }
     catch(error){
         console.log(error)
     }
 }
 run();
+app.get('/', (req, res) => {
+  res.send("a server is running ")
+});
 
 
 app.listen(port,()=> {
