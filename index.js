@@ -33,7 +33,11 @@ async function run(){
         const result = await campaignDB.insertOne(newCampaign);
         res.send(result);
       })
-
+      app.get("/campaigns", async(req, res)=>{
+        const cursor = campaignDB.find();
+        const result = await cursor.toArray();
+        res.send(result);
+      })
 
 
     }
