@@ -23,18 +23,26 @@ const client = new MongoClient(uri, {
 async function run(){
     try{
       await client.connect();
+      await client.db("admin").command({ ping: 1 });
       console.log("successfully Connected to mongoDB");
 
-   
+      const campaignDB = client.db("campaignDB").collection("campaigns")
+
+      app.post("/campaigns", async(req, res)=>{
+        const newCampaign = req.body;
+        const result = await campaignDB.insertOne(newCampaign);
+        res.send(result);
+      })
+
+
+
     }
     catch(error){
         console.log(error)
     }
 }
 run();
-app.get('/', (req, res) => {
-  res.send("a server is running ")
-});
+
 
 
 app.listen(port,()=> {
