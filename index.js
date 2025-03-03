@@ -28,26 +28,41 @@ async function run(){
 
       const campaignDB = client.db("campaignDB").collection("campaigns")
       const campaignDonateDB = client.db("campaignDB").collection("campaignDonation")
+
+
       app.post("/campaigns", async(req, res)=>{
         const newCampaign = req.body;
         const result = await campaignDB.insertOne(newCampaign);
         res.send(result);
       })
+
+
       app.get("/campaigns", async(req, res)=>{
         const cursor = campaignDB.find();
         const result = await cursor.toArray();
         res.send(result);
       })
+
+
       app.get("/campaigns/:id", async(req, res)=>{
         const id = req.params.id;
         const query = {_id: new ObjectId(id)};
         const result = await campaignDB.findOne(query);
         res.send(result);
       })
+
+
       app.post("/donation", async(req, res)=>{
         const NewDonation = req.body;
         console.log(NewDonation)
         const result = await campaignDonateDB.insertOne(NewDonation);
+        res.send(result)
+      })
+
+      app.get("/myCampaign/:email", async(req, res)=>{
+        const email = req.params.email;
+        const query = campaignDB.find({userEmail : email});
+        const result = await query.toArray();
         res.send(result)
       })
 
