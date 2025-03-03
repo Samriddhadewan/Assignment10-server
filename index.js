@@ -27,7 +27,7 @@ async function run(){
       console.log("successfully Connected to mongoDB");
 
       const campaignDB = client.db("campaignDB").collection("campaigns")
-
+      const campaignDonateDB = client.db("campaignDB").collection("campaignDonation")
       app.post("/campaigns", async(req, res)=>{
         const newCampaign = req.body;
         const result = await campaignDB.insertOne(newCampaign);
@@ -44,6 +44,12 @@ async function run(){
         const result = await campaignDB.findOne(query);
         res.send(result);
       })
+      app.post("/donation", async(req, res)=>{
+        const NewDonation = req.body;
+        console.log(NewDonation)
+        const result = await campaignDonateDB.insertOne(NewDonation);
+        res.send(result)
+      })
 
 
     }
@@ -53,6 +59,10 @@ async function run(){
 }
 run();
 
+
+app.get("/", (req, res)=>{
+  res.send("server is running ")
+})
 
 
 app.listen(port,()=> {
