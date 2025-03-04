@@ -78,6 +78,13 @@ async function run(){
         res.send(result)
       })
 
+      app.get("/myDonation/:email", async(req, res)=>{
+        const email = req.params.email;
+        const query = campaignDonateDB.find({donatedUserEmail : email});
+        const result = await query.toArray();
+        res.send(result);
+      })
+
       app.get("/myCampaign/:email", async(req, res)=>{
         const email = req.params.email;
         const query = campaignDB.find({userEmail : email});
