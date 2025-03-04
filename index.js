@@ -43,6 +43,25 @@ async function run(){
         res.send(result);
       })
 
+      app.put("/campaigns/:id", async(req, res)=>{
+        const id = req.params.id;
+        const filter = {_id : new ObjectId(id)}
+        const options = {upsert : true}
+        const updatedCampaign = req.body;
+        const updateCampaign = {
+          $set:{
+            thumbnail : updatedCampaign.thumbnail,
+            title: updatedCampaign.title,
+            campaignType: updatedCampaign.campaignType,
+            description:updatedCampaign.description,
+            minimumAmount:updatedCampaign.minimumAmount,
+            deadline: updatedCampaign.deadline
+          }
+        }
+        const result = await campaignDB.updateOne(filter,updateCampaign, options)
+        res.send(result);
+      })
+
 
       app.get("/campaigns/:id", async(req, res)=>{
         const id = req.params.id;
