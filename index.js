@@ -85,6 +85,12 @@ async function run(){
         res.send(result);
       })
 
+      app.get("/myItems", async(req, res)=>{
+          const query = campaignDB.find().limit(6);
+          const result = await query.toArray();
+          res.send(result)
+      })
+
       app.get("/myCampaign/:email", async(req, res)=>{
         const email = req.params.email;
         const query = campaignDB.find({userEmail : email});
@@ -97,10 +103,6 @@ async function run(){
         const result = await campaignDB.deleteOne(query);
         res.send(result)
       })
-
-
-
-
     }
     catch(error){
         console.log(error)
